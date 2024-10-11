@@ -1,29 +1,65 @@
-# Flight Data Analyzer
+# Airport Security Queue Simulation
 
 ## Overview
-The **Flight Data Analyzer** is a Java program designed to analyze flight data from a CSV file. It provides various functionalities, including finding unique airports, calculating passenger statistics, and measuring the runtime for specific operations. 
+This project simulates an airport security queue, focusing on determining the minimum number of counters needed to process all passengers on time based on flight schedules. The system reads flight data from a CSV file, filters it by state and airport, and then calculates how many counters are required to process passengers based on their arrival times.
 
-## Features
-- **Find Maine Airports:** Identifies all unique airport names in the state of Maine (ME) from a list of flights.
-- **Maximum Passengers:** Determines the maximum number of passengers on flights with Portland International Jetport (PWM) as the destination.
-- **Full Flights Percentage:** Calculates the percentage of full flights (flights with no empty seats).
-- **Average Passengers:** Computes the average number of passengers on flights from PWM to Florida (FL) for the year 2009.
-- **Runtime Measurement:** Checks and measures the execution times for various operations to analyze performance.
+## Project Structure
+- **Airport.java**: Represents an airport with a name, city, and state.
+- **Flight.java**: Represents a flight with origin, destination, flight time, passengers, seats, and distance.
+- **MyDataReader.java**: Reads flight data from a CSV file and provides filtering and sorting functionality based on origin state and airport.
+- **MyQueue.java**: A generic queue implementation using an ArrayList, used for processing flight data in a queue structure.
+- **Program4.java**: The main class that reads flight data, processes it, and calculates the minimum number of counters required to process all passengers.
+- **QueueSim.java**: Simulates the passenger processing for each hour and calculates the minimum number of counters required to ensure all passengers are processed on time.
 
-## Structure
-The project is organized into several classes, each serving a specific purpose:
+## Class Descriptions
 
-- **Flight:** Represents a flight with properties such as origin, destination, passengers, seats, distance, and flight date/time.
-- **Airport:** Represents an airport with properties like airport name, city, and state.
-- **MyDataReader:** Handles reading flight data from a CSV file and parsing it into Flight objects.
-- **MyAnalyzer:** Provides methods for analyzing flight data.
-- **MyArrayList:** A custom implementation of a dynamic array list.
-- **FlightComparator:** Implements sorting functionality for flights based on their origin airport names.
-- **Program1 & Program2:** Demonstrates the functionalities of the program and measures execution times for sorting and analyzing flights.
+### 1. Airport.java
+**Description**: Represents an airport with three fields: airport name, city, and state.  
+**Methods**:
+- `getAirportName()`: Returns the name of the airport.
+- `getCity()`: Returns the city of the airport.
+- `getState()`: Returns the state of the airport.
+- `toString()`: Returns a string representation of the airport.
+
+### 2. Flight.java
+**Description**: Represents a flight object, including origin and destination airports, passengers, seats, flight date/time, and distance.  
+**Methods**:
+- `compareTo(Flight otherFlight)`: Compares flight times to allow sorting.
+- Getters for origin, destination, passengers, seats, and flight date.
+
+### 3. MyDataReader.java
+**Description**: Utility class to read flight data from a CSV file, filter it by state, and sort flights by airport.  
+**Methods**:
+- `readFlightsFromCSV(String filePath, String originState)`: Reads flights from a CSV file, filtering by the given state.
+- `FlightSorted(String airportName, MyQueue<Flight> flights)`: Filters and sorts flights by the specified airport.
+
+### 4. MyQueue.java
+**Description**: A generic queue class implemented using an ArrayList. It provides typical queue operations such as offer, poll, peek, and size.  
+**Methods**:
+- `offer(T input)`: Adds an element to the queue.
+- `poll()`: Retrieves and removes the head of the queue.
+- `peek()`: Retrieves but does not remove the head of the queue.
+- `isEmpty()`: Checks if the queue is empty.
+- `size()`: Returns the size of the queue.
+
+### 5. QueueSim.java
+**Description**: Simulates the passenger processing for each flight and calculates the minimum number of counters needed. It processes flights by hour and ensures all passengers are processed within the available time.  
+**Methods**:
+- `addToQueue(ArrayList<Flight> sortedFlights, LocalDateTime currentTime)`: Adds flights scheduled within a specific time window to the queue.
+- `calculateMinCounters(ArrayList<Flight> sortedFlights)`: Calculates the minimum number of counters required to process all passengers on time.
+
+### 6. Program4.java
+**Description**: The main class that runs the simulation, reads flight data from a CSV file, and determines the minimum number of counters needed to process all passengers.  
+**Methods**:
+- `main(String[] args)`: Takes three command-line arguments: the path to the CSV file, the state to filter flights by, and the airport code.
 
 ## Usage
-To use the program:
+### Command-Line Arguments
+The program expects the following arguments:
+- **CSVFilePath**: The path to the CSV file containing flight data.
+- **State**: The state code (e.g., "ME") to filter flights by origin.
+- **AirportCode**: The airport code (e.g., "PWM") to further filter the flights.
 
-1. Ensure that you have a CSV file (e.g., `flights.csv`) containing the flight data.
-2. Modify the file path in the code as necessary to point to your CSV file.
-3. Compile and run the Java program.
+**Example command**:
+```bash
+java Program4 flights.csv ME PWM
